@@ -83,10 +83,25 @@ def get_sl_delta_th_loc(t,dx,rr,x,yrin):
     # Laminar flame speed
     rr_int = np.trapz(rr, x)
     SL = -1.0 * rr_int/yrin
-    print('delta_th = {:.5f} m'.format(deltath))
-    
-    print('S_L = {:.5f} m/s'.format(SL))
-    return
+
+    # Print to screen
+    utils.printline()
+    print('delta_th = {:.6f} m\nS_L = {:.5f} m/s'.format(deltath,SL))
+    return deltath
+
+def get_simulation_stat(lx,nxsize,deltath):
+    targetratio = 14.0
+
+    deltax = lx/(nxsize-1)
+    ratio = deltath/deltax
+    shrinkratio = ratio/targetratio
+
+    # print to screen
+    utils.printline()
+    print('Lx = {:.4f} m\nNx = {}\ndelta_x = {:.8f} m\nGrid across delta_th = {}\
+        \nShrink ratio = {:.2f}' \
+        .format(lx,nxsize,deltax,ratio,shrinkratio))
+    return ratio
 
 if __name__ == '__main__':
 
@@ -95,14 +110,16 @@ if __name__ == '__main__':
     plt.rcParams['font.size'] = 18
 
     dumpno = 20
-    lx = 0.02
+    xlength = 0.02
     nxsize = 1000
 
-    deltax = lx/(nxsize-1)
-    lx,drun,urun,vrun,wrun,erun,trun,prun,yrun,rrte = get_mpi_dump(dumpno,lx,nxsize,8,9)
+    deltax = xlength/(nxsize-1)
+    lx,drun,urun,vrun,wrun,erun,trun,prun,yrun,rrte = get_mpi_dump(dumpno,xlength,nxsize,8,9)
 
-    get_sl_delta_th_loc(trun,deltax,rrte[:,0],lx,yrun[0,0])
-
+    deltath = get_sl_delta_th_loc(trun,deltax,rrte[:,0],lx,yrun[0,0])
+    get_simulation_stat(xlength,nxsize,deltath)
+    
+    # Output figures
     f, ax = plt.subplots(3, 1, figsize=(8, 8))
 
     ax[0].plot(lx,trun, '-', color=colors[0], lw=1.0)
@@ -138,5 +155,5 @@ if __name__ == '__main__':
 
     plt.tight_layout()
     #plt.savefig(r"FileName.svg", format="svg")
-    plt.show()
+    #plt.show()
 

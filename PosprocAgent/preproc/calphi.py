@@ -21,7 +21,7 @@ if __name__ == '__main__':
     y_n2 = 3.76 * molar_mass_N2 / total_mass
     printout(1.0,y_h2,y_o2,y_n2)
 
-    phi = 0.6
+    phi = 1.2
     far = phi * far_st
     fuel = air * far
     total_mass = air + fuel

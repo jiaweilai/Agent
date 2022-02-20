@@ -11,6 +11,9 @@ PROPERTIES_FILE = os.path.abspath(os.path.join(Path(__file__).parent.parent, 're
 # Initialise global variables to be read from properties file
 global INPUT_DIR, OUTPUT_DIR
 
+def printline():
+    print('============================================')
+
 def read_properties_var(props,env_name):
     # Extract environmental value
     try:
