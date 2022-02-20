@@ -95,7 +95,7 @@ if __name__ == '__main__':
     plt.rcParams['font.size'] = 18
 
     dumpno = 20
-    lx = 0.01
+    lx = 0.02
     nxsize = 1000
 
     deltax = lx/(nxsize-1)
